@@ -1,17 +1,19 @@
 package com.ult1team.slimebuddies.SlimeBuddies;
 import com.ult1team.slimebuddies.SlimeBuddies.EventSubscribers.ItemUsed;
+import com.ult1team.slimebuddies.SlimeBuddies.Items.ModeledItemBase;
 import com.ult1team.slimebuddies.SlimeBuddies.Registry.Items;
 import com.ult1team.slimebuddies.SlimeBuddies.Utils.DeferredRegistryClone;
 import com.ult1team.slimebuddies.SlimeBuddies.Utils.RegistryObject;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import org.apache.logging.log4j.Level;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -38,7 +40,7 @@ public class SlimeBuddies {
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		for (RegistryObject<? extends Object> item:DeferredRegistryClone.registryObjects) {
+		for (RegistryObject<Object> item:DeferredRegistryClone.registryObjects) {
 			if (item.get() instanceof Item) {
 				event.getRegistry().register((Item)item.get());
 			}
@@ -47,9 +49,19 @@ public class SlimeBuddies {
 	
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		for (RegistryObject<? extends Object> item:DeferredRegistryClone.registryObjects) {
+		for (RegistryObject<Object> item:DeferredRegistryClone.registryObjects) {
 			if (item.get() instanceof Block) {
 				event.getRegistry().register((Block)item.get());
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void registerModels(ModelRegistryEvent event) {
+		for (RegistryObject<? extends Object> item:DeferredRegistryClone.registryObjects) {
+			if (item.get() instanceof ModeledItemBase) {
+				((ModeledItemBase)item.get()).registerModels(event);
 			}
 		}
 	}

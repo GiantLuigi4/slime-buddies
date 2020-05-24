@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "slime_buddies:items/slime_overlay_cauldron"
+	}
+}

@@ -9,7 +9,7 @@ public class RegistryObject<T> {
 	protected RegistryObject(String modid, String registryName,T object) {
 		value=(T)((IForgeRegistryEntry.Impl)object).setRegistryName(new ResourceLocation(modid,registryName));
 	}
-	public Object get() {
-		return ((IForgeRegistryEntry.Impl)value).delegate.get();
+	public T get() {
+		return (T)(((IForgeRegistryEntry.Impl)value).delegate.get());
 	}
 }

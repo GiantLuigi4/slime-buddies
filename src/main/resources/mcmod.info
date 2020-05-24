@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "slime_buddies",
+    "name": "Slime Buddies",
+    "description": "§2A mod to add pet slimes.\n§cIt is what the tin says.",
+    "version": "${version}",
+    "mcversion": "1.12.2",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["TheUlt1mateGuy,GiantLuigi4"],
+    "credits": "",
+    "logoFile": "icon.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
