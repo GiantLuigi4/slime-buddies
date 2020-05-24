@@ -3,7 +3,6 @@ package com.ult1team.slimebuddies.SlimeBuddies.Utils;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.function.Supplier;
 
 public class DeferredRegistryClone<T extends IForgeRegistryEntry.Impl> {

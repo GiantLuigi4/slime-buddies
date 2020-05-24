@@ -2,26 +2,17 @@ package com.ult1team.slimebuddies.SlimeBuddies.EventSubscribers;
 
 import com.ult1team.slimebuddies.SlimeBuddies.Items.EntityHolder;
 import com.ult1team.slimebuddies.SlimeBuddies.Registry.Items;
-import com.ult1team.slimebuddies.SlimeBuddies.SlimeBuddies;
-import net.minecraft.block.BlockCauldron;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.Level;
-
-import java.util.List;
 
 @Mod.EventBusSubscriber
 public class ItemUsed {
@@ -47,12 +38,12 @@ public class ItemUsed {
 				return true;
 			}
 			if (stack.getItem() instanceof ItemBucket) {
-				if (entity.serializeNBT().getInteger("size")<=1) {
+				if (entity.serializeNBT().getInteger("Size")<=1) {
 					return true;
 				}
 			}
 			if (stack.getItem() instanceof ItemGlassBottle||stack.getItem().getRegistryName().equals(net.minecraft.init.Items.LEATHER_CHESTPLATE.getRegistryName())) {
-				if (entity.serializeNBT().getInteger("size")<=0) {
+				if (entity.serializeNBT().getInteger("Size")<=0) {
 					return true;
 				}
 			}
