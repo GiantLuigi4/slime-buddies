@@ -1,6 +1,8 @@
 package com.ult1team.slimebuddies.SlimeBuddies.Items;
 
+import com.ult1team.slimebuddies.SlimeBuddies.Entities.Color;
 import com.ult1team.slimebuddies.SlimeBuddies.Registry.Items;
+import com.ult1team.slimebuddies.SlimeBuddies.SlimeBuddies;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
 
 public class EntityHolderRenderer extends TileEntityItemStackRenderer {
 	@Override
@@ -27,10 +30,32 @@ public class EntityHolderRenderer extends TileEntityItemStackRenderer {
 		if (renderStack.getItem() instanceof ItemGlassBottle) {
 			renderStack=new ItemStack(net.minecraft.init.Items.POTIONITEM);
 			NBTTagCompound compound2=new NBTTagCompound();
-			compound2.setInteger("CustomPotionColor",16777215);
+			compound2.setInteger("CustomPotionColor",new Color(255,255,255).getRGB());
 			renderStack.setTagCompound(compound2);
+			OverlayColors.tint=16777215;
 			Minecraft.getMinecraft().getRenderItem().renderItem(renderStack, ItemCameraTransforms.TransformType.NONE);
 		} else {
+			try {
+				if ((compound.getCompoundTag("entity")).hasKey("Color")) {
+					Color col=new Color(compound.getCompoundTag("entity").getInteger("Color"));
+					if (renderStack.getItem() instanceof ItemPotion) {
+						col=new Color(renderStack.getTagCompound().getInteger("CustomPotionColor")).average(col);
+						renderStack=new ItemStack(net.minecraft.init.Items.POTIONITEM);
+						NBTTagCompound compound2=new NBTTagCompound();
+						compound2.setInteger("CustomPotionColor",new Color(255,255,255).getRGB());
+						renderStack.setTagCompound(compound2);
+					}
+					col=new Color(
+							col.getRed(),
+							col.getGreen(),
+							col.getBlue()
+							);
+					OverlayColors.tint=col.getRGB();
+				} else {
+					OverlayColors.tint=new Color(255,255,255).getRGB();
+				}
+			} catch (Exception err) {
+			}
 			Minecraft.getMinecraft().getRenderItem().renderItem(renderStack, ItemCameraTransforms.TransformType.NONE);
 		}
 		if (renderStack.getItem() instanceof ItemGlassBottle||renderStack.getItem() instanceof ItemPotion) {

@@ -26,8 +26,6 @@ public class TamedSlimeRenderer extends RenderLiving<TamedSlimeBase>
 	public void doRender(TamedSlimeBase entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		Color col=new Color(entity.getColor());
-//		SlimeBuddies.log.log(Level.INFO,col.getRGB());
-//		SlimeBuddies.log.log(Level.INFO,entity.serializeNBT());
 		GlStateManager.color(col.getRed()/255f,col.getGreen()/255f,col.getBlue()/255f);
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
