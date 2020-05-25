@@ -1,15 +1,24 @@
 package com.ult1team.slimebuddies.SlimeBuddies;
+import com.ult1team.slimebuddies.SlimeBuddies.Entities.TamedSlimeBase;
+import com.ult1team.slimebuddies.SlimeBuddies.Entities.TamedSlimeRenderer;
 import com.ult1team.slimebuddies.SlimeBuddies.EventSubscribers.ItemUsed;
 import com.ult1team.slimebuddies.SlimeBuddies.Items.ModeledItemBase;
+import com.ult1team.slimebuddies.SlimeBuddies.Registry.Blocks;
 import com.ult1team.slimebuddies.SlimeBuddies.Registry.Entities;
 import com.ult1team.slimebuddies.SlimeBuddies.Registry.Items;
 import com.ult1team.slimebuddies.SlimeBuddies.Utils.DeferredRegistryClone;
 import com.ult1team.slimebuddies.SlimeBuddies.Utils.RegistryObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,16 +38,21 @@ public class SlimeBuddies {
 	public static final String MOD_NAME = "Slime Buddies";
 	public static final String VERSION = "0.1";
 	public static Logger log;
+	
 	@Mod.Instance(MOD_ID)
 	public static SlimeBuddies INSTANCE;
 	
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		log=event.getModLog();
-		MinecraftForge.EVENT_BUS.register(this);
 		Items.registerAll();
 		Entities.registerAll();
+		Blocks.registerAll();
+		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(ItemUsed.class);
+		if (event.getSide().isClient()) {
+			setupClient();
+		}
 	}
 	
 	@SubscribeEvent
@@ -71,10 +85,25 @@ public class SlimeBuddies {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void registerModels(ModelRegistryEvent event) {
-		for (RegistryObject<? extends Object> item:DeferredRegistryClone.registryObjects) {
+		for (RegistryObject<Object> item:DeferredRegistryClone.registryObjects) {
 			if (item.get() instanceof ModeledItemBase) {
 				((ModeledItemBase)item.get()).registerModels(event);
 			}
 		}
+		ModelLoader.setCustomStateMapper(Blocks.SUGAR_WATER.get(), new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return new ModelResourceLocation(MOD_ID+":sugar_water", "sugar_water");
+			}
+		});
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void setupClient() {
+		RenderingRegistry.registerEntityRenderingHandler(TamedSlimeBase.class, TamedSlimeRenderer::new);
+	}
+	
+	static {
+		FluidRegistry.enableUniversalBucket();
 	}
 }

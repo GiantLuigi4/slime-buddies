@@ -8,9 +8,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.translation.I18n;
 import org.apache.logging.log4j.Level;
 
 public class SlimeGrowthSerum extends ModeledItemBase {
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim();
+    }
+    
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         int currentsize = target.serializeNBT().getInteger("Size");

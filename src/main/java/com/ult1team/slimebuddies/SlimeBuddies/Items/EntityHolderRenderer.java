@@ -11,6 +11,7 @@ import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class EntityHolderRenderer extends TileEntityItemStackRenderer {
 	@Override
@@ -48,6 +49,9 @@ public class EntityHolderRenderer extends TileEntityItemStackRenderer {
 		} else {
 			GlStateManager.scale(1.001f,1.001f,1.001f);
 			ItemStack renderStack2=new ItemStack(Items.SLIME_OVERLAY_BUCKET.get());
+			if (renderStack.getItem().getRegistryName().equals(new ResourceLocation("forge","bucketfilled"))) {
+				GlStateManager.scale(1f,1f,1.008f);
+			}
 			if (compound.getCompoundTag("entity").getString("id").equals("minecraft:magma_cube")) {
 				renderStack2 = new ItemStack(Items.MAGMA_OVERLAY_BUCKET.get());
 			}
